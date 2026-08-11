@@ -63,5 +63,33 @@ const PRODUTOS = [
     preco: 234.9,
     categoria: "Calças",
     imagem: "https://images.unsplash.com/photo-1658213455892-b34ccd7b068e?w=500&auto=format&fit=crop&q=60"
+  },
+  {
+    id: 9,
+    nome: "Jaqueta Bomber Preta",
+    preco: 299.9,
+    categoria: "Jaquetas",
+    imagem: "https://images.unsplash.com/photo-1511742667815-af572199b23a?w=500&auto=format&fit=crop&q=60"
+  },
+  {
+    id: 10,
+    nome: "Boné Aba Curva Cinza",
+    preco: 84.9,
+    categoria: "Acessórios",
+    imagem: "https://images.unsplash.com/photo-1556306535-0f09a537f0a3?w=500&auto=format&fit=crop&q=60"
+  },
+  {
+    id: 11,
+    nome: "Tênis Branco Casual",
+    preco: 329.9,
+    categoria: "Calçados",
+    imagem: "https://images.unsplash.com/photo-1562333814-5890aad545c0?w=500&auto=format&fit=crop&q=60"
+  },
+  {
+    id: 12,
+    nome: "Calça Jeans Reta Street",
+    preco: 189.9,
+    categoria: "Calças",
+    imagem: "https://images.unsplash.com/photo-1715758890151-2c15d5d482aa?w=500&auto=format&fit=crop&q=60"
   }
 ];
