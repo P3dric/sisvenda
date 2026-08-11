@@ -17,10 +17,10 @@ const PRODUTOS = [
   },
   {
     id: 2,
-    nome: "Relógio Smartwatch",
-    preco: 349.0,
-    categoria: "Acessórios",
-    imagem: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop&q=60"
+    nome: "blusa chaos",
+    preco: 174.0,
+    categoria: "blusa",
+    imagem: "https://assets.grok.com/users/d1a5b1de-9d5b-40d5-afcd-b8eb5a0fb619/generated/6e8a3d21-6907-4a1f-9d61-e0f1eb99a5bf/image.jpg"
   },
   {
     id: 3,
