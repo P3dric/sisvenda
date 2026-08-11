@@ -31,23 +31,23 @@ const PRODUTOS = [
   },
   {
     id: 4,
-    nome: "Mochila para Notebook",
+    nome: "Calça UrbanVibe",
     preco: 179.9,
-    categoria: "Acessórios",
-    imagem: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&auto=format&fit=crop&q=60"
+    categoria: "Calça",
+    imagem: "https://assets.grok.com/users/d1a5b1de-9d5b-40d5-afcd-b8eb5a0fb619/generated/c786cf8a-3f1f-4372-b785-41e4f8a563b4/image.jpg"
   },
   {
     id: 5,
     nome: "camisa UrbanVibe",
     preco: 120.0,
-    categoria: "Eletrônicos",
+    categoria: "Camisa",
     imagem: "https://assets.grok.com/users/d1a5b1de-9d5b-40d5-afcd-b8eb5a0fb619/generated/603a0eff-bffc-42c8-aed6-bc2ce8ca5754/image.jpg"
   },
   {
     id: 6,
     nome: "blusa totalblack-UrbanVibe",
     preco: 129.9,
-    categoria: "Acessórios",
+    categoria: "Blusa",
     imagem: "https://assets.grok.com/users/d1a5b1de-9d5b-40d5-afcd-b8eb5a0fb619/generated/1ee4a705-fc7d-4451-94a3-5d4bf63f60fd/image.jpg"
   }
 ];
