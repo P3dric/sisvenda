@@ -1,1 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NovaLoja — Catálogo</title>
 
+  <!-- Tailwind CSS via CDN: não precisa instalar nada -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Nosso CSS extra (fontes + animações) -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col">
+
+  <!-- =====================  NAVBAR  ===================== -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-40">
+    <nav class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="font-display font-extrabold text-2xl text-slate-900">
+        Nova<span class="text-amber-600">Loja</span>
+      </a>
+
+      <div class="flex items-center gap-4 sm:gap-6">
+        <a href="index.html" class="text-sm font-medium text-slate-700 hover:text-amber-600 hidden sm:block">Catálogo</a>
+
+        <!-- Ícone/link para o carrinho, com contador de itens -->
+        <a href="carrinho.html" class="relative flex items-center gap-2 bg-slate-900 hover:bg-amber-600 transition-colors text-white px-4 py-2 rounded-xl">
+          <span>🛒</span>
+          <span class="text-sm font-medium hidden sm:inline">Carrinho</span>
+          <!-- Bolinha com a quantidade de itens (atualizada via JS) -->
+          <span class="contador-carrinho hidden absolute -top-2 -right-2 bg-amber-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">0</span>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- =====================  HERO  ===================== -->
+  <section class="bg-slate-900 text-white">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-14 text-center">
+      <h1 class="font-display text-3xl sm:text-4xl font-extrabold mb-3">Produtos selecionados para você</h1>
+      <p class="text-slate-300 max-w-xl mx-auto">
+        Projeto escolar de e-commerce — catálogo, carrinho e checkout 100% funcionais,
+        rodando direto no navegador com LocalStorage.
+      </p>
+    </div>
+  </section>
+
+  <!-- =====================  CATÁLOGO  ===================== -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-10">
+    <h2 class="font-display text-xl font-bold text-slate-800 mb-6">Catálogo de Produtos</h2>
+
+    <!-- Esta div é preenchida dinamicamente pela função renderizarCatalogo() em app.js -->
+    <div id="catalogo" class="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6"></div>
+  </main>
+
+  <!-- =====================  RODAPÉ  ===================== -->
+  <footer class="bg-white border-t border-slate-200 py-6 text-center text-sm text-slate-500">
+    NovaLoja © 2026 — Projeto escolar de demonstração.
+  </footer>
+
+  <!-- Scripts: primeiro os dados dos produtos, depois a lógica do app -->
+  <script src="js/produtos.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

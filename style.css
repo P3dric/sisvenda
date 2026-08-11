@@ -1,0 +1,29 @@
+/* ===================================================================
+   style.css
+   -------------------------------------------------------------------
+   O Tailwind CSS (via CDN) já cuida de 99% do layout. Aqui ficam só
+   os pequenos ajustes que o Tailwind puro não resolve sozinho:
+   a fonte customizada e a animação da notificação (toast).
+=================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap");
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+h1, h2, h3, .font-display {
+  font-family: "Poppins", sans-serif;
+}
+
+/* Animação usada pela notificação "toast" em app.js */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
