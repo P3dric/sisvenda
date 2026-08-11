@@ -3,12 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UrbanVibe — Catálogo</title>
+  <title>UrbanVibe — Checkout</title>
 
-  <!-- Tailwind CSS via CDN: não precisa instalar nada -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Nosso CSS extra (fontes + animações) -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="bg-slate-50 min-h-screen flex flex-col">
@@ -19,45 +16,105 @@
       <a href="index.html" class="font-display font-extrabold text-2xl text-slate-900">
         Urban<span class="text-amber-600">Vibe</span>
       </a>
-
-      <div class="flex items-center gap-4 sm:gap-6">
-        <a href="index.html" class="text-sm font-medium text-slate-700 hover:text-amber-600 hidden sm:block">Catálogo</a>
-
-        <!-- Ícone/link para o carrinho, com contador de itens -->
-        <a href="carrinho.html" class="relative flex items-center gap-2 bg-slate-900 hover:bg-amber-600 transition-colors text-white px-4 py-2 rounded-xl">
-          <span>🛒</span>
-          <span class="text-sm font-medium hidden sm:inline">Carrinho</span>
-          <!-- Bolinha com a quantidade de itens (atualizada via JS) -->
-          <span class="contador-carrinho hidden absolute -top-2 -right-2 bg-amber-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">0</span>
-        </a>
-      </div>
+      <a href="carrinho.html" class="relative flex items-center gap-2 bg-slate-900 hover:bg-amber-600 transition-colors text-white px-4 py-2 rounded-xl">
+        <span>🛒</span>
+        <span class="text-sm font-medium hidden sm:inline">Carrinho</span>
+        <span class="contador-carrinho hidden absolute -top-2 -right-2 bg-amber-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">0</span>
+      </a>
     </nav>
   </header>
 
-  <!-- =====================  HERO  ===================== -->
-  <section class="bg-slate-900 text-white">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-14 text-center">
-      <h1 class="font-display text-3xl sm:text-4xl font-extrabold mb-3">Produtos selecionados para você</h1>
-      <p class="text-slate-300 max-w-xl mx-auto">
-    
-      </p>
+  <!-- =====================  CONTEÚDO  ===================== -->
+  <main class="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-10">
+    <h1 class="font-display text-2xl font-bold text-slate-800 mb-6">Finalizar Compra</h1>
+
+    <div class="grid md:grid-cols-5 gap-6">
+
+      <!-- ---------- FORMULÁRIO DE CHECKOUT ---------- -->
+      <form id="form-checkout" onsubmit="finalizarCompra(event)" class="md:col-span-3 bg-white rounded-2xl shadow-sm p-6 space-y-4">
+
+        <h2 class="font-display font-bold text-slate-800 mb-2">Dados do Pedido</h2>
+
+        <div>
+          <label for="nome" class="block text-sm font-medium text-slate-700 mb-1">Nome completo</label>
+          <input type="text" id="nome" name="nome" required placeholder="Digite seu nome"
+                 class="w-full border border-slate-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-amber-500" />
+        </div>
+
+        <div>
+          <label for="email" class="block text-sm font-medium text-slate-700 mb-1">E-mail</label>
+          <input type="email" id="email" name="email" required placeholder="voce@email.com"
+                 class="w-full border border-slate-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-amber-500" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="telefone" class="block text-sm font-medium text-slate-700 mb-1">Telefone</label>
+            <input type="text" id="telefone" name="telefone" required
+                   inputmode="numeric" placeholder="(00) 00000-0000" maxlength="15"
+                   class="w-full border border-slate-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-amber-500" />
+          </div>
+
+          <div>
+            <label for="cpf" class="block text-sm font-medium text-slate-700 mb-1">CPF</label>
+            <input type="text" id="cpf" name="cpf" required
+                   inputmode="numeric" placeholder="000.000.000-00" maxlength="14"
+                   class="w-full border border-slate-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-amber-500" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-4">
+          <div>
+            <label for="cep" class="block text-sm font-medium text-slate-700 mb-1">CEP</label>
+            <input type="text" id="cep" name="cep" required
+                   inputmode="numeric" placeholder="00000-000" maxlength="9"
+                   class="w-full border border-slate-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-amber-500" />
+          </div>
+
+          <div class="col-span-2">
+            <label for="cidade" class="block text-sm font-medium text-slate-700 mb-1">Cidade</label>
+            <input type="text" id="cidade" name="cidade" required readonly placeholder="Preenchido pelo CEP"
+                   class="w-full border border-slate-300 rounded-xl px-4 py-2.5 bg-slate-100 text-slate-600 focus:outline-none focus:ring-2 focus:ring-amber-500" />
+          </div>
+        </div>
+
+        <div>
+          <label for="endereco" class="block text-sm font-medium text-slate-700 mb-1">Endereço de entrega</label>
+          <input type="text" id="endereco" name="endereco" required placeholder="Rua, número, bairro, cidade"
+                 class="w-full border border-slate-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-amber-500" />
+        </div>
+
+        <div>
+          <label for="pagamento" class="block text-sm font-medium text-slate-700 mb-1">Forma de pagamento</label>
+          <select id="pagamento" name="pagamento" required
+                  class="w-full border border-slate-300 rounded-xl px-4 py-2.5 bg-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+            <option value="Cartão de Crédito">Cartão de Crédito</option>
+            <option value="Cartão de Débito">Cartão de Débito</option>
+            <option value="Pix">Pix</option>
+            <option value="Boleto Bancário">Boleto Bancário</option>
+          </select>
+        </div>
+
+        <button id="btn-finalizar" type="submit"
+                class="w-full bg-amber-600 hover:bg-amber-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-white font-semibold py-3 rounded-xl mt-4">
+          Confirmar Pedido
+        </button>
+      </form>
+
+      <!-- ---------- RESUMO DO PEDIDO ---------- -->
+      <aside class="md:col-span-2 bg-white rounded-2xl shadow-sm p-6 h-fit">
+        <h2 class="font-display font-bold text-slate-800 mb-3">Resumo do Pedido</h2>
+        <!-- Preenchido dinamicamente por renderizarResumoCheckout() em app.js -->
+        <div id="resumo-checkout"></div>
+      </aside>
+
     </div>
-  </section>
-
-  <!-- =====================  CATÁLOGO  ===================== -->
-  <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-10">
-    <h2 class="font-display text-xl font-bold text-slate-800 mb-6">Catálogo de Produtos</h2>
-
-    <!-- Esta div é preenchida dinamicamente pela função renderizarCatalogo() em app.js -->
-    <div id="catalogo" class="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6"></div>
   </main>
 
-  <!-- =====================  RODAPÉ  ===================== -->
   <footer class="bg-white border-t border-slate-200 py-6 text-center text-sm text-slate-500">
-   UrbanVibe © 2026
+    UrbanVibe © 2026
   </footer>
 
-  <!-- Scripts: primeiro os dados dos produtos, depois a lógica do app -->
   <script src="produto.js"></script>
   <script src="app.js"></script>
 </body>

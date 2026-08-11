@@ -104,6 +104,101 @@ function contarItensCarrinho(carrinho) {
 }
 
 /* -------------------------------------------------------------------
+   MÁSCARAS: TELEFONE E CPF
+   -------------------------------------------------------------------
+   Essas funções formatam o campo automaticamente enquanto o usuário
+   digita, e bloqueiam qualquer caractere que não seja número.
+------------------------------------------------------------------- */
+
+// Formata telefone no padrão (00) 00000-0000, aceitando só dígitos
+function mascararTelefone(evento) {
+  let valor = evento.target.value.replace(/\D/g, ""); // remove tudo que não é número
+  valor = valor.slice(0, 11); // limita a 11 dígitos (DDD + 9 dígitos)
+
+  if (valor.length > 10) {
+    valor = valor.replace(/^(\d{2})(\d{5})(\d{0,4}).*/, "($1) $2-$3");
+  } else if (valor.length > 6) {
+    valor = valor.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, "($1) $2-$3");
+  } else if (valor.length > 2) {
+    valor = valor.replace(/^(\d{2})(\d{0,5})/, "($1) $2");
+  } else if (valor.length > 0) {
+    valor = valor.replace(/^(\d{0,2})/, "($1");
+  }
+
+  evento.target.value = valor;
+}
+
+// Formata CPF no padrão 000.000.000-00, aceitando só dígitos
+function mascararCPF(evento) {
+  let valor = evento.target.value.replace(/\D/g, ""); // remove tudo que não é número
+  valor = valor.slice(0, 11); // limita a 11 dígitos
+
+  valor = valor
+    .replace(/(\d{3})(\d)/, "$1.$2")
+    .replace(/(\d{3})(\d)/, "$1.$2")
+    .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+
+  evento.target.value = valor;
+}
+
+// Formata CEP no padrão 00000-000, aceitando só dígitos
+function mascararCEP(evento) {
+  let valor = evento.target.value.replace(/\D/g, ""); // remove tudo que não é número
+  valor = valor.slice(0, 8); // limita a 8 dígitos
+
+  if (valor.length > 5) {
+    valor = valor.replace(/^(\d{5})(\d{0,3})/, "$1-$2");
+  }
+
+  evento.target.value = valor;
+}
+
+/* -------------------------------------------------------------------
+   BUSCA DE CEP (API ViaCEP)
+   -------------------------------------------------------------------
+   Assim que o CEP tiver os 8 dígitos completos, buscamos a cidade
+   automaticamente na API pública e gratuita ViaCEP.
+------------------------------------------------------------------- */
+async function buscarCidadePorCEP(evento) {
+  const cepDigitado = evento.target.value.replace(/\D/g, "");
+  const campoCidade = document.getElementById("cidade");
+  const campoEndereco = document.getElementById("endereco");
+
+  // Só busca quando o CEP estiver completo (8 dígitos)
+  if (cepDigitado.length !== 8) {
+    campoCidade.value = "";
+    return;
+  }
+
+  campoCidade.value = "Buscando...";
+  campoCidade.placeholder = "Buscando...";
+
+  try {
+    const resposta = await fetch(`https://viacep.com.br/ws/${cepDigitado}/json/`);
+    const dados = await resposta.json();
+
+    if (dados.erro) {
+      campoCidade.value = "";
+      campoCidade.placeholder = "CEP não encontrado";
+      alert("CEP não encontrado. Confira o número digitado.");
+      return;
+    }
+
+    // Preenche a cidade automaticamente (o objetivo principal do CEP)
+    campoCidade.value = `${dados.localidade} - ${dados.uf}`;
+
+    // Se o campo de endereço ainda estiver vazio, já sugere rua e bairro
+    if (campoEndereco && campoEndereco.value.trim() === "") {
+      campoEndereco.value = `${dados.logradouro}${dados.logradouro ? ", " : ""}${dados.bairro}`;
+    }
+  } catch (erro) {
+    campoCidade.value = "";
+    campoCidade.placeholder = "Erro ao buscar CEP";
+    alert("Não foi possível buscar o CEP agora. Verifique sua conexão.");
+  }
+}
+
+/* -------------------------------------------------------------------
    FORMATAÇÃO
 ------------------------------------------------------------------- */
 
@@ -291,12 +386,41 @@ function finalizarCompra(evento) {
   // Coleta os dados do formulário
   const nome = document.getElementById("nome").value.trim();
   const email = document.getElementById("email").value.trim();
+  const telefone = document.getElementById("telefone").value.trim();
+  const cpf = document.getElementById("cpf").value.trim();
+  const cep = document.getElementById("cep").value.trim();
+  const cidade = document.getElementById("cidade").value.trim();
   const endereco = document.getElementById("endereco").value.trim();
   const pagamento = document.getElementById("pagamento").value;
 
+  // Validação rígida: telefone precisa ter os 11 dígitos completos
+  const telefoneNumeros = telefone.replace(/\D/g, "");
+  if (telefoneNumeros.length !== 11) {
+    alert("Digite um telefone válido, no formato (00) 00000-0000.");
+    return;
+  }
+
+  // Validação rígida: CPF precisa ter os 11 dígitos completos
+  const cpfNumeros = cpf.replace(/\D/g, "");
+  if (cpfNumeros.length !== 11) {
+    alert("Digite um CPF válido, no formato 000.000.000-00.");
+    return;
+  }
+
+  // Validação rígida: CEP precisa ter os 8 dígitos e já ter buscado a cidade
+  const cepNumeros = cep.replace(/\D/g, "");
+  if (cepNumeros.length !== 8) {
+    alert("Digite um CEP válido, no formato 00000-000.");
+    return;
+  }
+  if (cidade === "" || cidade === "Buscando...") {
+    alert("Aguarde a cidade ser preenchida automaticamente pelo CEP.");
+    return;
+  }
+
   // Monta um "pedido" e salva no LocalStorage (histórico simples)
   const pedido = {
-    cliente: { nome, email, endereco, pagamento },
+    cliente: { nome, email, telefone, cpf, cep, cidade, endereco, pagamento },
     itens: carrinho,
     total: calcularTotal(carrinho),
     data: new Date().toLocaleString("pt-BR")
@@ -324,4 +448,15 @@ document.addEventListener("DOMContentLoaded", () => {
   renderizarCatalogo();
   renderizarCarrinho();
   renderizarResumoCheckout();
+
+  // Ativa as máscaras de telefone, CPF e CEP (só existem no checkout)
+  const campoTelefone = document.getElementById("telefone");
+  const campoCPF = document.getElementById("cpf");
+  const campoCEP = document.getElementById("cep");
+  if (campoTelefone) campoTelefone.addEventListener("input", mascararTelefone);
+  if (campoCPF) campoCPF.addEventListener("input", mascararCPF);
+  if (campoCEP) {
+    campoCEP.addEventListener("input", mascararCEP);
+    campoCEP.addEventListener("blur", buscarCidadePorCEP); // busca ao sair do campo
+  }
 });
