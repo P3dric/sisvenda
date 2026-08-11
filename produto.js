@@ -38,16 +38,16 @@ const PRODUTOS = [
   },
   {
     id: 5,
-    nome: "Câmera Fotográfica Retrô",
-    preco: 899.0,
+    nome: "camisa UrbanVibe",
+    preco: 120.0,
     categoria: "Eletrônicos",
-    imagem: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500&auto=format&fit=crop&q=60"
+    imagem: "https://assets.grok.com/users/d1a5b1de-9d5b-40d5-afcd-b8eb5a0fb619/generated/603a0eff-bffc-42c8-aed6-bc2ce8ca5754/image.jpg"
   },
   {
     id: 6,
-    nome: "Óculos de Sol",
+    nome: "blusa totalblack-UrbanVibe",
     preco: 129.9,
     categoria: "Acessórios",
-    imagem: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500&auto=format&fit=crop&q=60"
+    imagem: "https://assets.grok.com/users/d1a5b1de-9d5b-40d5-afcd-b8eb5a0fb619/generated/1ee4a705-fc7d-4451-94a3-5d4bf63f60fd/image.jpg"
   }
 ];
