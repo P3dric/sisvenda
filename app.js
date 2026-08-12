@@ -153,6 +153,28 @@ function mascararCEP(evento) {
   evento.target.value = valor;
 }
 
+// Bloqueia a tecla ANTES de ser digitada: só permite números e teclas de
+// controle (Backspace, Delete, setas, Tab). Impede digitar além do limite
+// mesmo colando texto grande ou tentando digitar letras/símbolos.
+function permitirApenasNumeros(evento) {
+  const teclasControle = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab", "Home", "End"];
+  if (teclasControle.includes(evento.key)) return; // sempre permite essas teclas
+
+  const digitosAtuais = evento.target.value.replace(/\D/g, "").length;
+  const limiteMaximo = Number(evento.target.dataset.maxDigitos || 99);
+
+  // Bloqueia letras, símbolos e qualquer coisa que não seja 0-9
+  if (!/^\d$/.test(evento.key)) {
+    evento.preventDefault();
+    return;
+  }
+
+  // Bloqueia se já atingiu o limite de dígitos daquele campo
+  if (digitosAtuais >= limiteMaximo) {
+    evento.preventDefault();
+  }
+}
+
 /* -------------------------------------------------------------------
    BUSCA DE CEP (API ViaCEP)
    -------------------------------------------------------------------
@@ -244,11 +266,50 @@ function mostrarNotificacao(mensagem) {
    INTERFACE: CATÁLOGO DE PRODUTOS (index.html)
 ------------------------------------------------------------------- */
 
+// Guarda qual categoria está selecionada no momento ("Todos" = sem filtro)
+let categoriaAtiva = "Todos";
+
+// Desenha os botões de filtro (um para cada categoria + o botão "Todos")
+function renderizarFiltros() {
+  const container = document.getElementById("filtros-categoria");
+  if (!container) return; // se não existir essa div nessa página, não faz nada
+
+  // Pega as categorias únicas dos produtos, na ordem em que aparecem
+  const categorias = ["Todos", ...new Set(PRODUTOS.map((p) => p.categoria))];
+
+  container.innerHTML = categorias
+    .map((categoria) => {
+      const ativo = categoria === categoriaAtiva;
+      const classesBotao = ativo
+        ? "bg-slate-900 text-white"
+        : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200";
+      return `
+        <button onclick="filtrarPorCategoria('${categoria}')"
+                class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200 ${classesBotao}">
+          ${categoria}
+        </button>`;
+    })
+    .join("");
+}
+
+// Executado quando o usuário clica em um botão de categoria
+function filtrarPorCategoria(categoria) {
+  categoriaAtiva = categoria;
+  renderizarFiltros(); // redesenha os botões pra destacar o que foi clicado
+  renderizarCatalogo(); // redesenha o catálogo já filtrado
+}
+
 function renderizarCatalogo() {
   const container = document.getElementById("catalogo");
   if (!container) return; // se não existir essa div nessa página, não faz nada
 
-  container.innerHTML = PRODUTOS.map(
+  // Filtra os produtos pela categoria ativa (ou mostra todos)
+  const produtosFiltrados =
+    categoriaAtiva === "Todos"
+      ? PRODUTOS
+      : PRODUTOS.filter((p) => p.categoria === categoriaAtiva);
+
+  container.innerHTML = produtosFiltrados.map(
     (produto) => `
     <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-shadow duration-300 overflow-hidden flex flex-col">
       <div class="aspect-square overflow-hidden bg-slate-100">
@@ -445,6 +506,7 @@ function finalizarCompra(evento) {
 ------------------------------------------------------------------- */
 document.addEventListener("DOMContentLoaded", () => {
   atualizarContadorCarrinho();
+  renderizarFiltros();
   renderizarCatalogo();
   renderizarCarrinho();
   renderizarResumoCheckout();
@@ -453,9 +515,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const campoTelefone = document.getElementById("telefone");
   const campoCPF = document.getElementById("cpf");
   const campoCEP = document.getElementById("cep");
-  if (campoTelefone) campoTelefone.addEventListener("input", mascararTelefone);
-  if (campoCPF) campoCPF.addEventListener("input", mascararCPF);
+
+  if (campoTelefone) {
+    campoTelefone.addEventListener("keydown", permitirApenasNumeros);
+    campoTelefone.addEventListener("input", mascararTelefone);
+  }
+  if (campoCPF) {
+    campoCPF.addEventListener("keydown", permitirApenasNumeros);
+    campoCPF.addEventListener("input", mascararCPF);
+  }
   if (campoCEP) {
+    campoCEP.addEventListener("keydown", permitirApenasNumeros);
     campoCEP.addEventListener("input", mascararCEP);
     campoCEP.addEventListener("blur", buscarCidadePorCEP); // busca ao sair do campo
   }
