@@ -91,5 +91,33 @@ const PRODUTOS = [
     preco: 189.9,
     categoria: "Calças",
     imagem: "https://images.unsplash.com/photo-1715758890151-2c15d5d482aa?w=500&auto=format&fit=crop&q=60"
+  },
+  {
+    id: 13,
+    nome: "Moletom Preto Streetwear",
+    preco: 209.9,
+    categoria: "Moletons",
+    imagem: "https://images.unsplash.com/photo-1652823780977-b22c0ed84c97?w=500&auto=format&fit=crop&q=60"
+  },
+  {
+    id: 14,
+    nome: "Tênis Vermelho Cadarço Branco",
+    preco: 279.9,
+    categoria: "Calçados",
+    imagem: "https://images.unsplash.com/photo-1650320079970-b4ee8f0dae33?w=500&auto=format&fit=crop&q=60"
+  },
+  {
+    id: 15,
+    nome: "Tênis Branco Minimalista",
+    preco: 299.9,
+    categoria: "Calçados",
+    imagem: "https://images.unsplash.com/photo-1676379827610-c380c52db0c6?w=500&auto=format&fit=crop&q=60"
+  },
+  {
+    id: 16,
+    nome: "Jaqueta Jeans Preta",
+    preco: 259.9,
+    categoria: "Jaquetas",
+    imagem: "https://images.unsplash.com/photo-1549237511-bbe6a0979d6a?w=500&auto=format&fit=crop&q=60"
   }
 ];
